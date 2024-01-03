@@ -11,7 +11,8 @@
         "illuminate/redis": "^9.52",
         "illuminate/support": "^9.52",
         "laravel/lumen-framework": "^9.0",
-        "predis/predis": "^2.2"
+        "predis/predis": "^2.2",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

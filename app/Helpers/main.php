@@ -1,5 +1,5 @@
 <?php
-if ( ! function_exists('lang_path'))
+if (! function_exists('lang_path'))
 {
     /**
      * Get the Language path.

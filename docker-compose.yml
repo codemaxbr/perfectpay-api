@@ -1,0 +1,54 @@
+version: '3'
+volumes:
+  mysql:
+
+networks:
+  rede:
+    driver: bridge
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: perfectpay
+      MYSQL_DATABASE: perfectpay
+      MYSQL_USER: perfectpay
+      MYSQL_PASSWORD: perfectpay
+    networks:
+      - rede
+
+  redis:
+    image: redis:4.0
+    container_name: redis
+    ports:
+      - "6380:6379"
+    networks:
+      - rede
+
+  phpadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    ports:
+      - 8083:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - rede
+
+  api:
+    build: .
+    container_name: api
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - mysql

@@ -23,9 +23,15 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->alias('cache', Illuminate\Cache\CacheManager::class);
+$app->alias('Storage', Illuminate\Support\Facades\Storage::class);
+$app->alias('App', Illuminate\Support\Facades\App::class);
 
-// $app->withEloquent();
+$app->withFacades([
+    'Validator' => Illuminate\Support\Facades\Validator::class
+]);
+
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +66,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('database');
 
 /*
 |--------------------------------------------------------------------------
@@ -91,9 +98,13 @@ $app->configure('app');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Illuminate\Redis\RedisServiceProvider::class);
+$app->register(Illuminate\Validation\ValidationServiceProvider::class);
+$app->register(BenSampo\Enum\EnumServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

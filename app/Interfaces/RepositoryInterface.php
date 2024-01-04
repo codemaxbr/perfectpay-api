@@ -11,17 +11,17 @@ interface RepositoryInterface
     public function create(array $attributes);
 
     /**
-     * @param int $id
+     * @param array $where
      * @return mixed
      */
-    public function find(int $id);
+    public function find(array $where);
 
     /**
      * @param int $id
      * @param array $attributes
      * @return mixed
      */
-    public function update(int $id, array $attributes);
+    public function update(array $attributes, int $id);
 
     /**
      * @param int $id

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('visible')->default(true);
             $table->boolean('is_recurrence')->default(false);
             $table->string('payment_cycle')->nullable();
+            $table->string('external_id')->nullable();
             $table->timestamps();
         });
     }

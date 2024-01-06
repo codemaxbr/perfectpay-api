@@ -18,3 +18,12 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/login', ['uses' => 'AuthController@login']);
+
+$router->group(['middleware' => 'jwt.auth'], function() use ($router) {
+    $router->group(['prefix' => 'products'], function () use ($router) {
+        $router->get('/', ['uses' => 'ProductController@index']);
+        $router->post('/', ['uses' => 'ProductController@store']);
+        $router->put('/{id}', ['uses' => 'ProductController@update']);
+        $router->delete('/{id}', ['uses' => 'ProductController@destroy']);
+    });
+});

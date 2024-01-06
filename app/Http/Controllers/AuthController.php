@@ -28,9 +28,9 @@ class AuthController extends Controller
      * Autenticação de usuário
      *
      * @param Request $request
-     * @return AuthResource|JsonResponse
+     * @return AuthResource|JsonResponse|\Illuminate\Support\MessageBag
      */
-    public function login(Request $request): AuthResource
+    public function login(Request $request)
     {
         try {
             $validator = Validator::make($request->only(['email', 'password']), [
@@ -39,7 +39,7 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+                return $validator->errors();
             }
 
             $credentials = $request->only(['email', 'password']);

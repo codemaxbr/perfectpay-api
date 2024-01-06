@@ -28,27 +28,35 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Throwable  $exception
+     * @param  \Throwable  $e
      * @return void
      *
      * @throws \Exception
      */
-    public function report(Throwable $exception)
+    public function report(Throwable $e)
     {
-        parent::report($exception);
+        parent::report($e);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
+     * @param  \Throwable  $e
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $e)
     {
-        return parent::render($request, $exception);
+        $rendered = parent::render($request, $e);
+
+        return response()->json([
+            'error' => [
+                'message' => $e->getMessage(),
+                'request' => $request,
+                'trace' => $e->getTrace(),
+            ]
+        ], $e->getCode());
     }
 }

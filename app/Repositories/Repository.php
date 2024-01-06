@@ -83,7 +83,7 @@ abstract class Repository
             if (gettype($e->getCode()) == 'string') {
                 throw new \Exception($e->getMessage(), 500);
             } else {
-                throw new \Exception($e->getMessage(), $e->getCode());
+                throw new \Exception($e->getMessage(), 500);
             }
         }
     }
@@ -91,13 +91,13 @@ abstract class Repository
     public function update($data, $id)
     {
         try {
-            $model = $this->find(['id' => $id]);;
+            $model = $this->find(['id' => $id]);
             $model->fill($data);
             $model->save();
 
             return $model;
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), $e->getCode());
+            throw new \Exception($e->getMessage(), 500);
         }
     }
 
@@ -105,9 +105,11 @@ abstract class Repository
     {
         try {
             $model = $this->find(['id' => $id]);
-            return $model->delete();
+            $model->delete();
+
+            return $model;
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), $e->getCode());
+            throw new \Exception($e->getMessage(), 500);
         }
     }
 

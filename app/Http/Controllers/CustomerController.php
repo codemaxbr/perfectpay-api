@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -71,36 +72,59 @@ class CustomerController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return JsonResponse
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return JsonResponse
+     * @return CustomerResource|JsonResponse|\Illuminate\Support\MessageBag
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required | min:3',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('customers')->ignore($id)
+                ],
+                'phone_number' => 'required | numeric',
+                'cpf_cnpj' => 'required | numeric',
+                'zipcode' => 'numeric',
+                'street' => 'required_with:zipcode',
+                'number' => 'required_with:zipcode',
+                'neighborhood' => 'required_with:zipcode',
+                'city' => 'required_with:zipcode',
+                'state' => 'required_with:zipcode',
+            ]);
+
+            if ($validator->fails()) {
+                return $validator->errors();
+            }
+
+            $fields = $this->service->fields();
+            $values = $request->only($fields);
+
+            $customer = $this->service->update($values, $id);
+            return new CustomerResource($customer);
+        } catch (Exception $e) {
+            return $this->responseError($e);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return JsonResponse
+     * @return CustomerResource|JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $customer = $this->service->delete($id);
+            return new CustomerResource($customer);
+        } catch (Exception $e) {
+            return $this->responseError($e);
+        }
     }
 }

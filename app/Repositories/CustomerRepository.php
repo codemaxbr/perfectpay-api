@@ -45,4 +45,42 @@ class CustomerRepository extends Repository implements CustomerService
             throw new Exception($e->getMessage(), 500);
         }
     }
+
+    public function update($data, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $customer = parent::update($data, $id);
+
+            if (isset($data['zipcode'])) {
+                /** @var CustomersAddress $address */
+                $address = $customer->address;
+                $address->fill($data);
+                $address->save();
+            }
+
+            $customer->load('address');
+            event(new \App\Events\CustomerUpdated($customer));
+
+            DB::commit();
+            return $customer;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            DB::beginTransaction();
+            $customer = parent::delete($id);
+
+            event(new \App\Events\CustomerDeleted($customer));
+            DB::commit();
+
+            return $customer;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), 500);
+        }
+    }
 }

@@ -7,7 +7,7 @@ use App\Models\Customer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class CreateCustomerIntegration
+class CustomerIntegration
 {
     /**
      * Create the event listener.
@@ -22,10 +22,9 @@ class CreateCustomerIntegration
     /**
      * Handle the event.
      *
-     * @param  \App\Events\CustomerCreated  $event
      * @return void
      */
-    public function handle(CustomerCreated $event)
+    public function handle($event)
     {
         /** @var Customer $customer */
         $customer = $event->customer;

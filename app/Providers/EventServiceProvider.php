@@ -13,7 +13,15 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         \App\Events\CustomerCreated::class => [
-            \App\Listeners\CreateCustomerIntegration::class,
+            \App\Listeners\CustomerIntegration::class,
+        ],
+
+        \App\Events\CustomerUpdated::class => [
+            \App\Listeners\CustomerIntegration::class,
+        ],
+
+        \App\Events\CustomerDeleted::class => [
+            \App\Listeners\CustomerIntegration::class,
         ],
     ];
 

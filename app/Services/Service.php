@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Interfaces;
+namespace App\Services;
 
-interface RepositoryInterface
+interface Service
 {
     /**
      * @param array $attributes

@@ -26,4 +26,11 @@ $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
         $router->put('/{id}', ['uses' => 'ProductController@update']);
         $router->delete('/{id}', ['uses' => 'ProductController@destroy']);
     });
+
+    $router->group(['prefix' => 'customers'], function () use ($router) {
+        $router->get('/', ['uses' => 'CustomerController@index']);
+        $router->post('/', ['uses' => 'CustomerController@store']);
+        $router->put('/{id}', ['uses' => 'CustomerController@update']);
+        $router->delete('/{id}', ['uses' => 'CustomerController@destroy']);
+    });
 });

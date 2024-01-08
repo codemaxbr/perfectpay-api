@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\UserService;
+use App\Services\UserService;
 use App\Models\User;
 use App\Repositories\Repository;
 use Exception;

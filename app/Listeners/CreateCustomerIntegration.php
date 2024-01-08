@@ -2,11 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\ExampleEvent;
+use App\Events\CustomerCreated;
+use App\Models\Customer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class ExampleListener
+class CreateCustomerIntegration
 {
     /**
      * Create the event listener.
@@ -21,11 +22,12 @@ class ExampleListener
     /**
      * Handle the event.
      *
-     * @param  \App\Events\ExampleEvent  $event
+     * @param  \App\Events\CustomerCreated  $event
      * @return void
      */
-    public function handle(ExampleEvent $event)
+    public function handle(CustomerCreated $event)
     {
-        //
+        /** @var Customer $customer */
+        $customer = $event->customer;
     }
 }

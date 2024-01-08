@@ -57,6 +57,6 @@ class Handler extends ExceptionHandler
                 'request' => $request,
                 'trace' => $e->getTrace(),
             ]
-        ], $e->getCode());
+        ], ($e->getCode() == 0) ? 500 : $e->getCode());
     }
 }

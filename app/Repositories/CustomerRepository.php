@@ -73,7 +73,12 @@ class CustomerRepository extends Repository implements CustomerService
     {
         try {
             DB::beginTransaction();
-            $customer = parent::delete($id);
+            /** @var Customer $customer */
+            $customer = $this->model->find(['id' => $id]);
+            $customer = $customer->first();
+
+            $customer->user()->delete();
+            $customer->delete();
 
             event(new \App\Events\CustomerDeleted($customer));
             DB::commit();

@@ -9,7 +9,7 @@ trait JWT
     public function generateToken()
     {
         $payload = [
-            'iss' => "user", // Issuer of the token
+            'iss' => $this->scope, // Issuer of the token
             'sub' => $this->id, // Subject of the token
             'iat' => time(), // Time when JWT was issued.
             'exp' => time() + 60 * 60 * 24 * 7 // Expiration time

@@ -59,7 +59,7 @@ class AuthController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required | min:3',
-                'email' => 'required | email | unique:users | unique:customers,email',
+                'email' => 'required | email | unique:users,email|unique:customers,email',
                 'scope' => 'required | in:users,customers',
                 'password' => 'required | min:6',
                 'phone_number' => 'required | numeric',
@@ -76,7 +76,7 @@ class AuthController extends Controller
                 return $validator->errors();
             }
 
-            $fields = $request->only([
+            $values = $request->only([
                 'name',
                 'email',
                 'password',
@@ -91,8 +91,7 @@ class AuthController extends Controller
                 'state',
             ]);
 
-            $values = $request->only($fields);
-            $user = $this->service->create($values);
+            $user = $this->service->register($values);
 
             return new AuthResource($user);
         } catch (Exception $e) {

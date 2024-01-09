@@ -18,4 +18,9 @@ class Customer extends Model
     {
         return $this->hasOne(CustomersAddress::class);
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

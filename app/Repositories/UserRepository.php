@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Customer;
 use App\Services\UserService;
 use App\Models\User;
 use App\Repositories\Repository;
@@ -49,9 +50,20 @@ class UserRepository extends Repository implements UserService
             DB::beginTransaction();
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
+            /** @var User $user */
             $user = $this->model->create($data);
-            dd($user);
+
+            /** @var Customer $customer */
+            $customer = $user->customer()->create($data);
+            $user->customer_id = $customer->id;
+            $user->save();
+
+            event(new \App\Events\CustomerCreated($customer));
+            DB::commit();
+
+            return $user;
         } catch (Exception $e) {
+            DB::rollBack();
             throw new Exception($e->getMessage());
         }
     }

@@ -31,7 +31,15 @@ class JwtMiddleware
             $request['user_id'] = $credentials->sub;
             $request['scope'] = $credentials->iss;
 
+            if ($credentials->iss != "users") {
+                return response()->json([
+                    'status' => false,
+                    'error' => 'Acesso restrito apenas para Usuários'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
             return $next($request);
+
         } catch (ExpiredException $e) {
             throw new Exception('Provided token is expired.', Response::HTTP_UNAUTHORIZED);
         } catch (Exception $e) {

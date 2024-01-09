@@ -4,6 +4,6 @@ namespace App\Services;
 
 interface UserService extends Service
 {
-    public function login(array $credentials);
-    public function register(array $data);
+    public function login(array $credentials, $scope);
+    public function register(array $data, $scope);
 }

@@ -63,7 +63,7 @@ class AuthController extends Controller
                 'scope' => 'required | in:users,customers',
                 'password' => 'required | min:6',
                 'phone_number' => 'required | numeric',
-                'cpf_cnpj' => 'required | numeric',
+                'cpf_cnpj' => 'required | numeric | unique:customers,cpf_cnpj',
                 'zipcode' => 'numeric',
                 'street' => 'required_with:zipcode',
                 'number' => 'required_with:zipcode',
@@ -91,7 +91,7 @@ class AuthController extends Controller
                 'state',
             ]);
 
-            $user = $this->service->register($values);
+            $user = $this->service->register($values, $request->scope);
 
             return new AuthResource($user);
         } catch (Exception $e) {

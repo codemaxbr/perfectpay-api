@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->bigInteger('phone_number')->nullable();
-            $table->bigInteger('cpf_cnpj')->nullable();
+            $table->bigInteger('cpf_cnpj')->nullable()->unique();
             $table->string('external_id')->nullable();
             $table->timestamps();
         });

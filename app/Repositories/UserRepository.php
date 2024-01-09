@@ -44,7 +44,7 @@ class UserRepository extends Repository implements UserService
         }
     }
 
-    public function register(array $data): User
+    public function register(array $data, $scope = 'users'): User
     {
         try {
             DB::beginTransaction();
@@ -53,12 +53,15 @@ class UserRepository extends Repository implements UserService
             /** @var User $user */
             $user = $this->model->create($data);
 
-            /** @var Customer $customer */
-            $customer = $user->customer()->create($data);
-            $user->customer_id = $customer->id;
-            $user->save();
+            if ($scope == 'customers') {
+                /** @var Customer $customer */
+                $customer = $user->customer()->create($data);
+                $user->customer_id = $customer->id;
+                $user->save();
 
-            event(new \App\Events\CustomerCreated($customer));
+                event(new \App\Events\CustomerCreated($customer));
+            }
+
             DB::commit();
 
             return $user;

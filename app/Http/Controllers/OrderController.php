@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,7 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return JsonResponse|MessageBag
+     * @return OrderResource|JsonResponse|MessageBag
      */
     public function store(Request $request)
     {
@@ -48,9 +49,12 @@ class OrderController extends Controller
             }
 
             $fields = $this->service->fields();
+            $fields = array_merge($fields, ['payment_method']);
             $values = $request->only($fields);
 
             $order = $this->service->create($values);
+
+            return new OrderResource($order);
         } catch (Exception $e) {
             return $this->responseError($e);
         }

@@ -23,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\CustomerDeleted::class => [
             \App\Listeners\CustomerIntegration::class,
         ],
+
+        \App\Events\OrderCreated::class => [
+            \App\Listeners\OrderIntegration::class,
+        ],
     ];
 
     /**

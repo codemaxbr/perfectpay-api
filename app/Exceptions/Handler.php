@@ -50,6 +50,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         $rendered = parent::render($request, $e);
+        dd($e);
 
         return response()->json([
             'error' => [

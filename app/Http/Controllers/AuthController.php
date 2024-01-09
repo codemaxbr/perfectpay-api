@@ -43,9 +43,56 @@ class AuthController extends Controller
             }
 
             $credentials = $request->only(['email', 'password']);
+            $scope = $request->header('scope', 'users');
 
             /** @var \App\Models\User $user */
-            $user = $this->service->login($credentials);
+            $user = $this->service->login($credentials, $scope);
+
+            return new AuthResource($user);
+        } catch (Exception $e) {
+            return $this->responseError($e);
+        }
+    }
+
+    public function register(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required | min:3',
+                'email' => 'required | email | unique:users | unique:customers,email',
+                'scope' => 'required | in:users,customers',
+                'password' => 'required | min:6',
+                'phone_number' => 'required | numeric',
+                'cpf_cnpj' => 'required | numeric',
+                'zipcode' => 'numeric',
+                'street' => 'required_with:zipcode',
+                'number' => 'required_with:zipcode',
+                'neighborhood' => 'required_with:zipcode',
+                'city' => 'required_with:zipcode',
+                'state' => 'required_with:zipcode',
+            ]);
+
+            if ($validator->fails()) {
+                return $validator->errors();
+            }
+
+            $fields = $request->only([
+                'name',
+                'email',
+                'password',
+                'scope',
+                'phone_number',
+                'cpf_cnpj',
+                'zipcode',
+                'street',
+                'number',
+                'neighborhood',
+                'city',
+                'state',
+            ]);
+
+            $values = $request->only($fields);
+            $user = $this->service->create($values);
 
             return new AuthResource($user);
         } catch (Exception $e) {

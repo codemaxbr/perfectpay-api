@@ -14,7 +14,8 @@ class AuthResource extends JsonResource
             'token' => $this->generateToken(),
             'user' => [
                 'name' => $this->name,
-                'email' => $this->email
+                'email' => $this->email,
+                'scope' => $this->scope,
             ]
         ];
     }

@@ -50,12 +50,11 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         $rendered = parent::render($request, $e);
-        dd($e);
 
         return response()->json([
+            'status' => false,
             'error' => [
                 'message' => $e->getMessage(),
-                'request' => $request,
                 'trace' => $e->getTrace(),
             ]
         ], ($e->getCode() == 0) ? 500 : $e->getCode());

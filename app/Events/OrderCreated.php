@@ -20,8 +20,7 @@ class OrderCreated extends Event
         Product $product,
         Customer $customer,
         $payment_method = 'BOLETO',
-        $credit_card = null,
-        $ip = null
+        $credit_card = null
     )
     {
         $this->order = $order;
@@ -29,6 +28,5 @@ class OrderCreated extends Event
         $this->payment_method = $payment_method;
         $this->customer = $customer;
         $this->credit_card = $credit_card;
-        $this->ip = $ip;
     }
 }

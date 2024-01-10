@@ -42,7 +42,5 @@ $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
 
     $router->group(['prefix' => 'orders'], function () use ($router) {
         $router->get('/', ['uses' => 'OrderController@index']);
-        $router->put('/{id}', ['uses' => 'OrderController@update']);
-        $router->delete('/{id}', ['uses' => 'OrderController@destroy']);
     });
 });

@@ -21,7 +21,7 @@ class JwtMiddleware
     public function handle($request, Closure $next)
     {
         $token = $request->bearerToken();
-        if(!$token) {
+        if(empty($token) || is_null($token)) {
             // Unauthorized response if token not there
             throw new Exception('Token not provided.', Response::HTTP_UNAUTHORIZED);
         }
@@ -43,7 +43,7 @@ class JwtMiddleware
         } catch (ExpiredException $e) {
             throw new Exception('Provided token is expired.', Response::HTTP_UNAUTHORIZED);
         } catch (Exception $e) {
-            throw new Exception('An error while decoding token.', Response::HTTP_UNAUTHORIZED);
+            throw new Exception($e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
     }
 }

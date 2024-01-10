@@ -36,7 +36,7 @@ class CustomerMiddleware
         } catch (ExpiredException $e) {
             throw new Exception('Provided token is expired.', Response::HTTP_UNAUTHORIZED);
         } catch (Exception $e) {
-            throw new Exception('An error while decoding token.', Response::HTTP_UNAUTHORIZED);
+            throw new Exception($e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
     }
 }

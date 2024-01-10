@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\OrderService;
@@ -33,10 +34,15 @@ class OrderRepository extends Repository implements OrderService
             $payment_method = $data['payment_method'];
 
             $order = $this->model->create($data);
-            event(new \App\Events\OrderCreated($order, $product, $payment_method));
+
+            /** @var Customer $customer */
+            $customer = $order->customer;
+            event(new \App\Events\OrderCreated($order, $product, $customer, $payment_method));
+            DB::commit();
 
             return $order;
         } catch (Exception $e) {
+            DB::rollBack();
             throw new Exception($e->getMessage());
         }
     }

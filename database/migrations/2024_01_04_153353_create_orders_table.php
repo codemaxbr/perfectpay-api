@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('due');
             $table->string('external_id')->nullable();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->longText('response')->nullable();
             $table->timestamps();
         });
     }

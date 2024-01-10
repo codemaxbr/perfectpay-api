@@ -12,7 +12,8 @@ class Order extends Model
         'amount',
         'due',
         'external_id',
-        'product_id'
+        'product_id',
+        'response'
     ];
 
     public function customer()

@@ -39,17 +39,19 @@ class CustomerIntegration
 
         switch (get_class($event)) {
             case CustomerCreated::class:
-                $external_id = $this->integration->createCustomer($customer);
-                if (!empty($external_id)) {
-                    $customer->external_id = $external_id;
+                $integration = $this->integration->createCustomer($customer);
+
+                if (!empty($integration)) {
+                    $customer->external_id = $integration->id;
                     $customer->save();
                 }
                 break;
 
             case CustomerUpdated::class:
-                $external_id = $this->integration->updateCustomer($customer, $customer->external_id);
-                if (!empty($external_id)) {
-                    $customer->external_id = $external_id;
+                $integration = $this->integration->updateCustomer($customer, $customer->external_id);
+
+                if (!empty($integration)) {
+                    $customer->external_id = $integration->id;
                     $customer->save();
                 }
                 break;

@@ -24,7 +24,7 @@ class OrderResource extends JsonResource
             'external_id' => $this->external_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'payment' => $this->payment
+            'response' => json_decode($this->response)
         ];
 
         switch ($request->method()) {

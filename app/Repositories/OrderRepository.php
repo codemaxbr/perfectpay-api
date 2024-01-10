@@ -32,12 +32,14 @@ class OrderRepository extends Repository implements OrderService
             $data['status'] = 'pending';
             $data['due'] = Carbon::now()->addDays(7)->format('Y-m-d');
             $payment_method = $data['payment_method'];
+            $credit_card = (isset($data['credit_card'])) ? (object) $data['credit_card'] : null;
+            $ip = $data['ip'];
 
             $order = $this->model->create($data);
 
             /** @var Customer $customer */
             $customer = $order->customer;
-            event(new \App\Events\OrderCreated($order, $product, $customer, $payment_method));
+            event(new \App\Events\OrderCreated($order, $product, $customer, $payment_method, $credit_card, $ip));
             DB::commit();
 
             return $order;

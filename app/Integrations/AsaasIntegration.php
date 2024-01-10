@@ -42,7 +42,7 @@ class AsaasIntegration implements IntegrationService
                 $http_code = $e->getResponse()->getStatusCode();
                 $error = json_decode($e->getResponse()->getBody()->getContents());
 
-                throw new \Exception('Erro ao processar requisição na API.', $http_code);
+                throw new \Exception($error->errors[0]->description, $http_code);
             }
         }
     }
@@ -101,7 +101,31 @@ class AsaasIntegration implements IntegrationService
 
     public function transactionCreditCard($payload)
     {
-        // TODO: Implement transactionCreditCard() method.
+        return $this->requestApi('POST', '/v3/payments', [
+            'customer' => $payload->customer->external_id,
+            'billingType' => PaymentMethod::Cartao,
+            'value' => $payload->order->amount,
+            'dueDate' => Carbon::createFromDate($payload->order->due)->format('Y-m-d'),
+            'description' => 'Pedido #' . $payload->order->id .' - Compra - ' . $payload->product->name,
+            'externalReference' => $payload->order->id,
+            'creditCard' => [
+                'holderName' => $payload->credit_card->holder,
+                'number' => (string) $payload->credit_card->number,
+                'expiryMonth' => $payload->credit_card->expireMonth,
+                'expiryYear' => $payload->credit_card->expireYear,
+                'ccv' => $payload->credit_card->ccv,
+            ],
+            'creditCardHolderInfo' => [
+                'name' => $payload->customer->name,
+                'email' => $payload->customer->email,
+                'cpfCnpj' => (string) $payload->customer->cpf_cnpj,
+                'postalCode' => '24455-090',
+                'addressNumber' => '37',
+                'addressComplement' => null,
+                'phone' => (string) 4738010919,
+                'mobilePhone' => (string) $payload->customer->phone_number,
+            ]
+        ]);
     }
 
     public function transactionPix($payload)

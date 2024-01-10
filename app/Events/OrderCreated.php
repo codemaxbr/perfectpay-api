@@ -12,12 +12,23 @@ class OrderCreated extends Event
     public $product;
     public $customer;
     public string $payment_method;
+    public $credit_card;
+    public $ip;
 
-    public function __construct(Order $order, Product $product, Customer $customer, $payment_method = 'BOLETO')
+    public function __construct(
+        Order $order,
+        Product $product,
+        Customer $customer,
+        $payment_method = 'BOLETO',
+        $credit_card = null,
+        $ip = null
+    )
     {
         $this->order = $order;
         $this->product = $product;
         $this->payment_method = $payment_method;
         $this->customer = $customer;
+        $this->credit_card = $credit_card;
+        $this->ip = $ip;
     }
 }

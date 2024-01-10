@@ -43,6 +43,8 @@ class OrderIntegration
         $product = $event->product;
 
         $payment_method = $event->payment_method;
+        $credit_card = $event->credit_card;
+        $ip = $event->ip;
 
         /** @var Customer $customer */
         $customer = $event->customer;
@@ -70,11 +72,20 @@ class OrderIntegration
                 break;
 
             case PaymentMethod::Cartao:
-                dd('Cartão', $order, $product, $customer);
-                break;
+                $transaction = $this->integration->transactionCreditCard((object) [
+                    'customer' => $customer,
+                    'order' => $order,
+                    'product' => $product,
+                    'credit_card' => $credit_card,
+                ]);
 
-            case PaymentMethod::Pix:
-                dd('Pix', $order, $product, $customer);
+                if ($transaction->status == 'CONFIRMED') {
+                    $order->status = 'paid';
+                }
+
+                $order->external_id = $transaction->id;
+                $order->response = json_encode($transaction);
+                $order->save();
                 break;
         }
     }

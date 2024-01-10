@@ -42,6 +42,11 @@ class OrderController extends Controller
                 'customer_id' => 'required | exists:customers,id',
                 'product_id' => 'required | exists:products,id',
                 'payment_method' => 'required | in:CREDIT_CARD,PIX,BOLETO',
+                'credit_card.number' => 'numeric | required_if:payment_method,CREDIT_CARD',
+                'credit_card.expireMonth' => 'numeric | required_if:payment_method,CREDIT_CARD',
+                'credit_card.expireYear' => 'numeric | required_if:payment_method,CREDIT_CARD',
+                'credit_card.ccv' => 'numeric | required_if:payment_method,CREDIT_CARD',
+                'credit_card.holder' => 'required_if:payment_method,CREDIT_CARD',
             ]);
 
             if ($validator->fails()) {
@@ -49,8 +54,9 @@ class OrderController extends Controller
             }
 
             $fields = $this->service->fields();
-            $fields = array_merge($fields, ['payment_method']);
+            $fields = array_merge($fields, ['payment_method', 'credit_card']);
             $values = $request->only($fields);
+            $values = array_merge($values, ['ip' => getUserIP()]);
 
             $order = $this->service->create($values);
 

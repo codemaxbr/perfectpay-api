@@ -10,6 +10,9 @@ RUN docker-php-ext-install -j$(nproc) pdo \
     pdo_mysql \
     sockets
 
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 RUN pecl install redis && docker-php-ext-enable redis \
     && apt-get autoremove --purge -y && apt-get autoclean -y && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \

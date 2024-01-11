@@ -66,6 +66,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('cors');
 $app->configure('database');
 
 /*
@@ -80,7 +81,7 @@ $app->configure('database');
 */
 
 $app->middleware([
-    App\Http\Middleware\CorsMiddleware::class
+    App\Http\Middleware\CorsMiddleware::class,
 ]);
 
 $app->routeMiddleware([

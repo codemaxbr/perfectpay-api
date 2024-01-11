@@ -19,6 +19,7 @@ $router->get('/', function () use ($router) {
 
 $router->post('/login', ['uses' => 'AuthController@login']);
 $router->post('/register', ['uses' => 'AuthController@register']);
+$router->get('/products', ['uses' => 'ProductController@index']);
 
 $router->group(['middleware' => 'jwt.customer'], function() use ($router) {
     $router->post('/orders', ['uses' => 'OrderController@store']);
@@ -27,7 +28,6 @@ $router->group(['middleware' => 'jwt.customer'], function() use ($router) {
 
 $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
     $router->group(['prefix' => 'products'], function () use ($router) {
-        $router->get('/', ['uses' => 'ProductController@index']);
         $router->post('/', ['uses' => 'ProductController@store']);
         $router->put('/{id}', ['uses' => 'ProductController@update']);
         $router->delete('/{id}', ['uses' => 'ProductController@destroy']);

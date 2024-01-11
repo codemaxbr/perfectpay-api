@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0",
         "ext-pdo": "*",
+        "barryvdh/laravel-cors": "^3.0",
         "bensampo/laravel-enum": "^v5.3.1",
         "firebase/php-jwt": "^6.10",
         "flipbox/lumen-generator": "^9.2",

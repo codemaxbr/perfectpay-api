@@ -9,6 +9,10 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Response;
 
+/**
+ * Class JwtMiddleware
+ * @package App\Http\Middleware
+ */
 class JwtMiddleware
 {
     /**

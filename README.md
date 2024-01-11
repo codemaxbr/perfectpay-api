@@ -18,8 +18,18 @@ Documentation for the framework can be found on the [Lumen website](https://lume
 3. Se o .env já não tiver sido copiado, execute: `cp .env.example .env`
 4. Execute a migration com Seeder: `php artisan migrate --seed`
 ---
-## Security Vulnerabilities
 
+## Acesso de Homologação
+* Documentação da API [Postman](https://documenter.getpostman.com/view/2571197/2s9YsM9WRn)
+* URL da API (temporário): http://api.gerentepro.com.br
+* Frontend (temporário): http://desafio.gerentepro.com.br
+
+  O Ambiente temporário, é em minha conta AWS.
+  Tudo em container com Docker, disponibilizei essa opção como alternativa mais rápida.
+  
+## Repositórios
+* API - https://github.com/codemaxbr/perfectpay-api
+* Frontend Laravel - https://github.com/codemaxbr/perfectpay-checkout
 If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
 ## License

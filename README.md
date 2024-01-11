@@ -11,10 +11,13 @@ Laravel Lumen is a stunningly fast PHP micro-framework for building web applicat
 
 Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
 
-## Contributing
+## Como rodar o projeto em Docker
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
+1. Na raíz do projeto, execute: `docker-compose up -d`
+2. Acesse o terminal do Container `api`, execute: `docker exec -it api bash`
+3. Se o .env já não tiver sido copiado, execute: `cp .env.example .env`
+4. Execute a migration com Seeder: `php artisan migrate --seed`
+---
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
